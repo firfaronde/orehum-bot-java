@@ -15,6 +15,11 @@ import static firfaronde.Vars.*;
 public class Main {
     public static void main(String[] args) {
         Vars.load();
+        try {
+            Bundle.load();
+        } catch (Exception e) {
+            System.out.println("Unable to load bundle " + e);
+        }
         CommandRegister.load();
 
         client = DiscordClient.create(token);

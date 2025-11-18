@@ -1,8 +1,12 @@
 package firfaronde.commands;
 
+import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.core.spec.MessageCreateSpec;
 import discord4j.discordjson.json.MessageReferenceData;
+import discord4j.rest.util.Color;
+import firfaronde.Bundle;
 import firfaronde.Vars;
+import firfaronde.database.PlayTime;
 
 import static firfaronde.Vars.handler;
 import static firfaronde.Utils.*;
@@ -11,9 +15,9 @@ public class CommandRegister {
     public static void load() {
         handler.register("help", (e, args)->{
             var msg = new StringBuilder();
-            msg.append("```");
+            msg.append("```\nCommands:\n");
             for(CommandData c : handler.commands)
-                msg.append(c.name).append(" ").append(c.description);
+                msg.append("  ").append(c.name).append(" ").append(c.description).append("\n");
             msg.append("```");
             var message = e.getMessage();
             message.getChannel().subscribe((ch)->{
@@ -24,6 +28,37 @@ public class CommandRegister {
                                 .build())
                         .subscribe();
             });
+        });
+
+        handler.register("time", (e, a)->{
+            try {
+                var sb = new StringBuilder();
+                var pl = PlayTime.getPlaytime(a[0]);
+                var embed = EmbedCreateSpec.builder()
+                        .color(Color.CYAN);
+                for (var t : pl) {
+                    sb.append("**"+ Bundle.getJobName(t.tracker)+"** "+t.timeSpent.getDays()+"д "+t.timeSpent.getHours()+"ч "+t.timeSpent.getMinutes()+"м").append("\n");
+                }
+                sb.setLength(Math.min(sb.length(), 1999));
+                embed.addField(a[0], sb.toString(), false);
+                var message = e.getMessage();
+                message.getChannel().subscribe((ch) -> {
+                    ch.createMessage(MessageCreateSpec
+                                    .builder()
+                                    .content("Всего: "+sb.length())
+                                    .addEmbed(embed.build())
+                                    .messageReference(messageReference(message.getId()))
+                                    .build())
+                            .subscribe();
+                });
+            } catch (Exception err) {
+                System.out.println(err);
+            }
+        });
+
+        handler.register("stats", (e, a)->{
+            String mem = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024 + " MB";
+            sendReply(e.getMessage(), mem);
         });
     }
 }

@@ -85,14 +85,14 @@ public class Database {
      * @author https://github.com/ols45234
      * */
     @FunctionalInterface
-    private interface ThrowingConsumer<T> {
+    public interface ThrowingConsumer<T> {
         void accept(T t) throws SQLException;
     }
     /**
      * @author https://github.com/ols45234
      * */
     @FunctionalInterface
-    private interface SQLFunction<T, R> {
+    public interface SQLFunction<T, R> {
         R apply(T t) throws SQLException;
     }
 }
