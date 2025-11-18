@@ -19,11 +19,20 @@ public class Vars {
 
     public static CommandHandler handler = new CommandHandler();
 
+    public static String db, db_user, db_password, db_host;
+    public static int db_port;
+
     public static void load() {
         env = Dotenv.load();
 
         token = env.get("TOKEN");
         prefix = env.get("PREFIX");
         guildId = Snowflake.of(env.get("GUILD_ID"));
+
+        db = env.get("DATABASE");
+        db_user = env.get("DB_USER");
+        db_password = env.get("DB_PASSWORD");
+        db_host = env.get("DB_HOST");
+        db_port = Integer.parseInt(env.get("DB_PORT"));
     }
 }
