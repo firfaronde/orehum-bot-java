@@ -13,6 +13,22 @@ import java.util.Set;
 public class CommandHandler {
     public List<CommandData> commands = new ArrayList<>();
 
+    public void register(String name, String description, Executor e) {
+        commands.add(new CommandData(name, description, e));
+    }
+
+    public void register(String name, Executor e) {
+        commands.add(new CommandData(name, "No description provided", e));
+    }
+
+    public void register(String name, String description, Executor e, Snowflake... roles) {
+        commands.add(new CommandData(name, description, e, roles));
+    }
+
+    public void register(String name, Executor e, Snowflake... roles) {
+        commands.add(new CommandData(name, "No description provided", e, roles));
+    }
+
     public void apply(MessageCreateEvent event) {
         var msg = event.getMessage();
         var authorOpt = msg.getAuthor();
