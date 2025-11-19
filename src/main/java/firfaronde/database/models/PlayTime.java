@@ -1,4 +1,4 @@
-package firfaronde.database;
+package firfaronde.database.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,8 +6,6 @@ import org.postgresql.util.PGInterval;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.List;
 
 import static firfaronde.database.Database.executeQueryList;
@@ -39,6 +37,6 @@ public class PlayTime {
 
     @Override
     public String toString() {
-        return id+" "+""+" "+tracker+" "+timeSpent.getDays()+"d"+timeSpent.getHours()+"h";
+        return id+" "+" "+" "+tracker+" "+timeSpent.getDays()+"d"+timeSpent.getHours()+"h";
     }
 }

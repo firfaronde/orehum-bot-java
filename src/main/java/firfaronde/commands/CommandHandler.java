@@ -52,16 +52,15 @@ public class CommandHandler {
 
         var argsToPass = Arrays.copyOfRange(args, 1, args.length);
 
-        if(command.roles == null) {
+        if(command.roles == null)
             command.execute(event, argsToPass);
-        } else {
+        else
             author.asMember(Vars.guildId)
                     .subscribe(m -> {
                         if (hasAnyRole(m.getRoleIds(), command.roles)) {
                             command.execute(event, argsToPass);
                         }
                     });
-        }
     }
 
     CommandData findCommand(String name) {

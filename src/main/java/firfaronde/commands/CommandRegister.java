@@ -2,11 +2,9 @@ package firfaronde.commands;
 
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.core.spec.MessageCreateSpec;
-import discord4j.discordjson.json.MessageReferenceData;
 import discord4j.rest.util.Color;
 import firfaronde.Bundle;
-import firfaronde.Vars;
-import firfaronde.database.PlayTime;
+import firfaronde.database.models.PlayTime;
 
 import static firfaronde.Vars.handler;
 import static firfaronde.Utils.*;
@@ -56,7 +54,12 @@ public class CommandRegister {
             }
         });
 
-        handler.register("stats", (e, a)->{
+        handler.register("ogo", (e, a)->{
+
+        });
+
+        handler.register("gc", (e, a)->{
+            System.gc();
             String mem = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024 + " MB";
             sendReply(e.getMessage(), mem);
         });
