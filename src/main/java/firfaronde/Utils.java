@@ -2,6 +2,7 @@ package firfaronde;
 
 import discord4j.common.util.Snowflake;
 import discord4j.core.object.entity.Message;
+import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.core.spec.MessageCreateSpec;
 import discord4j.discordjson.Id;
 import discord4j.discordjson.json.MessageReferenceData;
@@ -19,6 +20,16 @@ public class Utils {
             ch.createMessage(MessageCreateSpec
                             .builder()
                             .content(content)
+                            .build())
+                    .subscribe();
+        });
+    }
+
+    public static void sendEmbeds(Message message, EmbedCreateSpec... embeds) {
+        message.getChannel().subscribe((ch)-> {
+            ch.createMessage(MessageCreateSpec
+                            .builder()
+                            .embeds(embeds)
                             .build())
                     .subscribe();
         });

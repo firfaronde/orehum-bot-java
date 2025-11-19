@@ -19,7 +19,7 @@ public class Character {
     public int preferenceId;
     public String gender, flavorText;
     public float height, width;
-    public String customSpecieName, lifepath, nationality;
+    public String customSpecieName, lifepath, nationality, species;
 
     public static List<Character> getCharacters(String ckey) {
         return executeQueryList(
@@ -44,7 +44,8 @@ public class Character {
                 rs.getFloat("width"),
                 rs.getString("custom_specie_name"),
                 rs.getString("lifepath"),
-                rs.getString("nationality")
+                rs.getString("nationality"),
+                rs.getString("species")
         );
     }
 }

@@ -4,10 +4,15 @@ import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.core.spec.MessageCreateSpec;
 import discord4j.rest.util.Color;
 import firfaronde.Bundle;
+import firfaronde.database.models.JobPreference;
 import firfaronde.database.models.PlayTime;
 
 import static firfaronde.Vars.handler;
 import static firfaronde.Utils.*;
+
+import firfaronde.database.models.Character;
+
+import java.util.ArrayList;
 
 public class CommandRegister {
     public static void load() {
@@ -29,6 +34,11 @@ public class CommandRegister {
         });
 
         handler.register("time", (e, a)->{
+            var message = e.getMessage();
+            if(a.length<1) {
+                sendReply(message, "Недостаточно аргументов. команда принимает:\n`ckey`");
+                return;
+            }
             try {
                 var sb = new StringBuilder();
                 var pl = PlayTime.getPlaytime(a[0]);
@@ -39,7 +49,6 @@ public class CommandRegister {
                 }
                 sb.setLength(Math.min(sb.length(), 1999));
                 embed.addField(a[0], sb.toString(), false);
-                var message = e.getMessage();
                 message.getChannel().subscribe((ch) -> {
                     ch.createMessage(MessageCreateSpec
                                     .builder()
@@ -55,7 +64,39 @@ public class CommandRegister {
         });
 
         handler.register("ogo", (e, a)->{
+            var msg = e.getMessage();
+            if(a.length<1) {
+                sendReply(msg, "Недостаточно аргументов. команда принимает:\n`ckey`");
+                return;
+            }
+            var chars = Character.getCharacters(a[0]);
+            if(chars.isEmpty()) {
+                sendReply(msg, "Игрок не найден.");
+                return;
+            }
+            var embeds = new ArrayList<EmbedCreateSpec>();
 
+            var sb = new StringBuilder();
+
+            for(var ch : chars) {
+                var bj = JobPreference.getBestJob(ch.id);
+                sb.append("Возраст: "+ch.age);
+                sb.append("\nРаса: "+Bundle.getSpeciesName(ch.species));
+                sb.append("\nПол: "+Bundle.getSexName(ch.sex));
+                sb.append("\nЖизненный путь: "+Bundle.getLifepathName(ch.lifepath));
+                if(bj.isPresent())
+                    sb.append("\nРоль: "+bj.get().jobName);
+                sb.append("\n\n"+ch.flavorText);
+                sb.setLength(Math.min(sb.length(), 1024));
+                embeds.add(EmbedCreateSpec
+                        .builder()
+                                .addField(ch.charName, sb.toString(), false)
+                                .color(Color.of(ch.skinColor))
+                        .build()
+                );
+                sb.setLength(0);
+            }
+            sendEmbeds(msg, embeds.subList(0, Math.min(10, embeds.size())).toArray(new EmbedCreateSpec[0]));
         });
 
         handler.register("gc", (e, a)->{
