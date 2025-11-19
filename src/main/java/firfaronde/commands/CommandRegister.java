@@ -63,7 +63,7 @@ public class CommandRegister {
             }
         });
 
-        handler.register("ogo", (e, a)->{
+        handler.register("сосал?", (e, a)->{
             var msg = e.getMessage();
             if(a.length<1) {
                 sendReply(msg, "Недостаточно аргументов. команда принимает:\n`ckey`");
@@ -78,8 +78,12 @@ public class CommandRegister {
 
             var sb = new StringBuilder();
 
+            var schar = Character.getSelected(a[0]);
+
             for(var ch : chars) {
                 var bj = JobPreference.getBestJob(ch.id);
+                if(schar.isPresent() && schar.get() == ch.slot)
+                    sb.append("**Выбранный персонаж**\n\n");
                 sb.append("Возраст: "+ch.age);
                 sb.append("\nРаса: "+Bundle.getSpeciesName(ch.species));
                 sb.append("\nПол: "+Bundle.getSexName(ch.sex));
