@@ -90,7 +90,12 @@ public class Main {
                         .doOnError(err -> logger.error("Failed to update presence", err))
                         .subscribe();
             } catch (Exception e) {
-                logger.error("Failed to fetch server status", e);
+                gateway.updatePresence(
+                                ClientPresence.online(ClientActivity.playing("Сервер офaлайн"))
+                        )
+                        .doOnError(err -> logger.error("Failed to update presence", err))
+                        .subscribe();
+                // logger.error("Failed to fetch server status", e);
             }
         }, 0, 5, TimeUnit.SECONDS);
     }
