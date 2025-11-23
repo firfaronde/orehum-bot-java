@@ -6,6 +6,9 @@ import discord4j.core.GatewayDiscordClient;
 import firfaronde.commands.CommandHandler;
 import io.github.cdimascio.dotenv.Dotenv;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class Vars {
     static Dotenv env;
 
@@ -21,6 +24,8 @@ public class Vars {
 
     public static String db, db_user, db_password, db_host;
     public static int db_port;
+
+    public static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public static void load() {
         env = Dotenv.load();

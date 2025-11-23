@@ -7,6 +7,7 @@ import firfaronde.Bundle;
 import firfaronde.database.models.JobPreference;
 import firfaronde.database.models.PlayTime;
 
+import static firfaronde.Vars.executor;
 import static firfaronde.Vars.handler;
 import static firfaronde.Utils.*;
 
@@ -33,7 +34,7 @@ public class CommandRegister {
             });
         });
 
-        handler.register("time", (e, a)->{
+        handler.register("playtime", (e, a)->{
             var message = e.getMessage();
             if(a.length<1) {
                 sendReply(message, "Недостаточно аргументов. команда принимает:\n`ckey`");
@@ -63,7 +64,7 @@ public class CommandRegister {
             }
         });
 
-        handler.register("сосал?", (e, a)->{
+        handler.register("characters", (e, a)->{
             var msg = e.getMessage();
             if(a.length<1) {
                 sendReply(msg, "Недостаточно аргументов. команда принимает:\n`ckey`");
@@ -107,6 +108,18 @@ public class CommandRegister {
             System.gc();
             String mem = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024 + " MB";
             sendReply(e.getMessage(), mem);
+        });
+
+        handler.register("status", (e, a)->{
+            executor.submit(()->{
+                try {
+                    var resp = getJson("http://47.89.131.63:17110/status");
+                    var e = EmbedCreateSpec.builder();
+                    e.
+                } catch (Exception ex) {
+                    sendReply(e.getMessage(), "Ошибка при выполнении запроса.");
+                }
+            });
         });
     }
 }
