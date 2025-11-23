@@ -8,6 +8,8 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+import static firfaronde.Vars.logger;
+
 public class Bundle {
     private static final Map<String, String> jobs = new HashMap<>();
     private static final Map<String, String> species = new HashMap<>();
@@ -17,13 +19,13 @@ public class Bundle {
     private static final HttpClient client = HttpClient.newHttpClient();
 
     public static void load() throws IOException, InterruptedException {
-        System.out.println("Loading bundle");
+        logger.info("Loading bundle");
 
         // Jobs
         jobs.putAll(loadFtl("https://raw.githubusercontent.com/BohdanNovikov0207/Orehum-Project/refs/heads/master/Resources/Locale/ru-RU/job/job-names.ftl"));
         jobs.put("Overall", "Общее");
         jobs.put("Admin", "Админ");
-        System.out.println("Jobs localization loaded");
+        logger.info("Jobs localization loaded");
 
         // Species
         species.putAll(loadFtl("https://raw.githubusercontent.com/BohdanNovikov0207/Orehum-Project/refs/heads/master/Resources/Locale/ru-RU/species/species.ftl"));
@@ -32,17 +34,17 @@ public class Bundle {
         species.put("species-name-tajaran", "Таяр");
         species.put("species-name-felinid", "Фелинид");
         species.put("species-name-feroxi", "Ферокси");
-        System.out.println("Species localization loaded");
+        logger.info("Species localization loaded");
 
         // Sexes
         sexes.put("male", "Мужской");
         sexes.put("female", "Женский");
         sexes.put("unsexed", "Бесполый");
-        System.out.println("Sexes localization loaded");
+        logger.info("Sexes localization loaded");
 
         // Lifepaths
         lifepaths.putAll(loadFtl("https://raw.githubusercontent.com/BohdanNovikov0207/Orehum-Project/refs/heads/master/Resources/Locale/ru-RU/_Orehum/contractors/lifepath.ftl"));
-        System.out.println("Lifepaths localization loaded");
+        logger.info("Lifepaths localization loaded");
     }
 
     private static Map<String, String> loadFtl(String url) throws IOException, InterruptedException {

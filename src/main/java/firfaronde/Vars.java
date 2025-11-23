@@ -5,9 +5,12 @@ import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
 import firfaronde.commands.CommandHandler;
 import io.github.cdimascio.dotenv.Dotenv;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class Vars {
     static Dotenv env;
@@ -17,6 +20,8 @@ public class Vars {
 
     public static Snowflake guildId;
 
+    public static Snowflake botId;
+
     public static DiscordClient client;
     public static GatewayDiscordClient gateway;
 
@@ -25,7 +30,10 @@ public class Vars {
     public static String db, db_user, db_password, db_host;
     public static int db_port;
 
-    public static final ExecutorService executor = Executors.newSingleThreadExecutor();
+    public static final ExecutorService executor = Executors.newWorkStealingPool();
+    public static final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
+    public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void load() {
         env = Dotenv.load();
