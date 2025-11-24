@@ -215,7 +215,7 @@ public class CommandRegister {
                 HttpResponse<String> resp = updateServer();
                 sendReply(msg, "Успешно:\n"+resp);
             } catch (Exception er) {
-                sendReply(msg, "Ошибка при отправке запроса\n"+er);
+                sendReply(msg, "Ошибка при отправке запроса\n"+er.getMessage());
             }
         }, devRoleId, ownerRoleId);
     }
