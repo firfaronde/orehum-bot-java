@@ -35,6 +35,9 @@ public class Vars {
 
     public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
+    public static Snowflake ownerRoleId, devRoleId;
+    public static String instanceId, instanceApiKey, watchdogHost; // ss14.watchdog
+
     public static void load() {
         env = Dotenv.load();
 
@@ -47,5 +50,12 @@ public class Vars {
         db_password = env.get("DB_PASSWORD");
         db_host = env.get("DB_HOST");
         db_port = Integer.parseInt(env.get("DB_PORT"));
+
+        ownerRoleId = Snowflake.of(env.get("OWNER_ROLE_ID"));
+        devRoleId = Snowflake.of(env.get("DEV_ROLE_ID"));
+
+        instanceId = env.get("INSTANCE_ID");
+        instanceApiKey = env.get("INSTANCE_API_KEY");
+        watchdogHost = env.get("WATCHDOG_HOST");
     }
 }

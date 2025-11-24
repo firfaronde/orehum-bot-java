@@ -16,6 +16,7 @@ import static firfaronde.database.Database.*;
 
 import firfaronde.database.models.Character;
 
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -207,6 +208,16 @@ public class CommandRegister {
         handler.register("nukeserver", "Просто взорви этот сервер!", (e, a)->{
             sendReply(e.getMessage(), "https://tenor.com/view/explosion-mushroom-cloud-atomic-bomb-bomb-boom-gif-4464831");
         });
+
+        handler.register("updateserver", "Отправить сервер на обновление", (e, a)->{
+            Message msg = e.getMessage();
+            try {
+                HttpResponse<String> resp = updateServer();
+                sendReply(msg, "Успешно:\n"+resp);
+            } catch (Exception er) {
+                sendReply(msg, "Ошибка при отправке запроса\n"+er);
+            }
+        }, devRoleId, ownerRoleId);
     }
 
 }

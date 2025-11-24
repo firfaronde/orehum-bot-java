@@ -16,7 +16,10 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
+import java.util.Base64;
 import java.util.Map;
+
+import static firfaronde.Vars.*;
 
 public class Utils {
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -128,5 +131,20 @@ public class Utils {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public static HttpResponse<String> updateServer() throws Exception {
+        HttpClient client = HttpClient.newHttpClient();
+
+        String auth = instanceId + ":" + instanceApiKey;
+        String encoded = Base64.getEncoder().encodeToString(auth.getBytes());
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://"+watchdogHost+"/instances/"+instanceId+"update"))
+                .header("Authorization", "Basic " + encoded)
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 }
