@@ -46,6 +46,10 @@ public class CommandRegister {
             try {
                 var sb = new StringBuilder();
                 var pl = PlayTime.getPlaytime(a[0]);
+                if(pl.isEmpty()) {
+                    sendReply(message, "Игрока не существует или трекеры пусты.");
+                    return;
+                }
                 var embed = EmbedCreateSpec.builder()
                         .color(Color.CYAN);
                 for (var t : pl) {
