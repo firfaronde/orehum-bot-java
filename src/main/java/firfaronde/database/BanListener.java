@@ -18,6 +18,8 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Optional;
 
+import static firfaronde Vars.*;
+
 import static firfaronde.Utils.sendEmbedToChannel;
 
 public class BanListener {
