@@ -35,8 +35,10 @@ public class Vars {
 
     public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-    public static Snowflake ownerRoleId, devRoleId;
+    public static Snowflake ownerRoleId, devRoleId, bansChannel;
     public static String instanceId, instanceApiKey, watchdogHost; // ss14.watchdog
+
+    public static boolean enableBanListener;
 
     public static void load() {
         env = Dotenv.load();
@@ -57,5 +59,9 @@ public class Vars {
         instanceId = env.get("INSTANCE_ID");
         instanceApiKey = env.get("INSTANCE_API_KEY");
         watchdogHost = env.get("WATCHDOG_HOST");
+
+        enableBanListener = Boolean.parseBoolean(env.get("ENABLE_BAN_LISTENER"));
+        if(enableBanListener)
+            bansChannel = Snowflake.of(env.get("BANS_CHANNEL_ID"));
     }
 }

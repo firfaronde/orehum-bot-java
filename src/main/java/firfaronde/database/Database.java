@@ -25,6 +25,7 @@ public class Database {
         dataSource.setUrl("jdbc:postgresql://"+db_host+":"+db_port+"/"+db);
         dataSource.setUser(db_user);
         dataSource.setPassword(db_password);
+
         return dataSource;
     }
 

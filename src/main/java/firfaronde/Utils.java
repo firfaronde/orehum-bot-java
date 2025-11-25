@@ -3,6 +3,7 @@ package firfaronde;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import discord4j.common.util.Snowflake;
 import discord4j.core.object.entity.Message;
+import discord4j.core.object.entity.channel.MessageChannel;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.core.spec.MessageCreateSpec;
 import discord4j.discordjson.Id;
@@ -22,6 +23,13 @@ import java.util.Map;
 import static firfaronde.Vars.*;
 
 public class Utils {
+    public static void sendEmbedToChannel(Snowflake id, EmbedCreateSpec e) {
+        gateway.getChannelById(id)
+                .ofType(MessageChannel.class)
+                .flatMap(ch -> ch.createMessage(e))
+                .subscribe();
+    }
+
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static MessageReferenceData messageReference(Snowflake msgId) {

@@ -11,6 +11,8 @@ import discord4j.core.object.entity.channel.ThreadChannel;
 import discord4j.core.object.presence.ClientActivity;
 import discord4j.core.object.presence.ClientPresence;
 import firfaronde.commands.CommandRegister;
+import firfaronde.database.BanListener;
+import firfaronde.database.Database;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -27,7 +29,7 @@ public class Main {
             Bundle.load();
         } catch (Exception e) {
             // System.out.println("Unable to load bundle " + e);
-            logger.error("Unable to load bundle\n{}", e);
+            logger.error("Unable to load bundle", e);
         }
         CommandRegister.load();
 
@@ -74,6 +76,7 @@ public class Main {
             //gw.on(MessageCreateEvent.class, handler::applyReactive).subscribe();
 
             startTimer();
+            new Thread(() -> BanListener.load(Database.dataSource)).start();
 
             return Mono.empty();
         });
