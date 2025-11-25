@@ -77,7 +77,7 @@ public class Main {
 
             startTimer();
             if(enableBanListener)
-            new Thread(() -> BanListener.load(Database.dataSource)).start();
+                new Thread(() -> BanListener.load(Database.dataSource)).start();
 
             return Mono.empty();
         });
