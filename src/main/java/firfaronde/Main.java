@@ -76,6 +76,7 @@ public class Main {
             //gw.on(MessageCreateEvent.class, handler::applyReactive).subscribe();
 
             startTimer();
+            if(enableBanListener)
             new Thread(() -> BanListener.load(Database.dataSource)).start();
 
             return Mono.empty();
