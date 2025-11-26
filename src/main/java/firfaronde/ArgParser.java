@@ -29,7 +29,7 @@ public class ArgParser {
                 optArgs += 1;*/
         }
 
-        logger.info("Args provided {}\nArgs need {}\nArgs {}\nArgsPos {}", args.length, needArgs, argss, argsPos)
+        logger.info("Args provided {}\nArgs need {}\nArgs {}\nArgsPos {}", args.length, needArgs, argss, argsPos);
 
         if(needArgs > args.length)
             return new ParseResult("Слишком мало аргумнетов.");
