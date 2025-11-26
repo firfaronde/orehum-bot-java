@@ -95,7 +95,7 @@ public class Main {
                         .subscribe();
             } catch (Exception e) {
                 gateway.updatePresence(
-                                ClientPresence.online(ClientActivity.playing("Сервер офaлайн"))
+                                ClientPresence.online(ClientActivity.playing("Сервер офлайн"))
                         )
                         .doOnError(err -> logger.error("Failed to update presence", err))
                         .subscribe();
