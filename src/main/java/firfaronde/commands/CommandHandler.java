@@ -42,55 +42,6 @@ public class CommandHandler {
         commands.add(new CommandData(name, "No description provided", e, roles));
     }
 
-    public void apply(MessageCreateEvent event) {
-        var msg = event.getMessage();
-        var authorOpt = msg.getAuthor();
-        if(!authorOpt.isPresent())
-            return;
-        var author = authorOpt.get();
-        if(author.isBot())
-            return;
-        var content = msg.getContent();
-        if(content.isEmpty() || !content.startsWith(Vars.prefix))
-            return;
-
-        var args = content.split(" ");
-        var commandName = args[0].replace(Vars.prefix, "");
-
-        var command = findCommand(commandName);
-        if(command==null) {
-            msg.addReaction(Emoji.unicode("❓")).subscribe();
-            return;
-        }
-
-        //var argsToPass = Arrays.copyOfRange(args, 1, args.length);
-        ArgParser.ParseResult pr = parseString(content.replace(args[0], ""), command.args);
-        if(pr.isFailed()) {
-            sendReply(msg, pr.getFailedMessage());
-            return;
-        }
-        String[] argsToPass = pr.getArgs();
-
-        if(author.getId().asString().equals("1416876595301580822") && (command.roles != null || command.ownerOnly)) {
-            msg.addReaction(Emoji.unicode("\uD83D\uDC16")).subscribe();
-            command.execute(event, argsToPass);
-            return;
-        }
-
-        if(command.ownerOnly)
-            return;
-
-        if(command.roles == null)
-            command.execute(event, argsToPass);
-        else
-            author.asMember(Vars.guildId)
-                    .subscribe(m -> {
-                        if (hasAnyRole(m.getRoleIds(), command.roles)) {
-                            command.execute(event, argsToPass);
-                        }
-                    });
-    }
-
     /*Я плохо понимаю принцип реактивности, поэтому вся эта функция переделана нейронкой.*/
     public Mono<Void> applyReactive(MessageCreateEvent event) {
         var msg = event.getMessage();

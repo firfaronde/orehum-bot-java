@@ -14,7 +14,7 @@ public class ArgParser {
     public static ParseResult parseString(String argss, String argsPos) {
         String[] args = argss.trim().split("\\s+");
         if(argsPos == null || argsPos.isBlank()) {
-            logger.debug("Args is empty");
+            logger.debug("ArgsPos is empty, returning ALL args");
             return new ParseResult(args);
         }
         String[] apos = argsPos.trim().split("\\s+");
@@ -34,7 +34,7 @@ public class ArgParser {
         logger.debug("Args provided {}\nArgs need {}\nArgs {}\nArgsPos {}", args.length, needArgs, argss, argsPos);
 
         if(needArgs > args.length)
-            return new ParseResult("Слишком мало аргумнетов.");
+            return new ParseResult("Слишком мало аргумнетов. Требуется:\n"+argsPos);
 
         for(int i = 0; i<apos.length; i += 1) {
             String a = apos[i];

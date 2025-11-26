@@ -37,7 +37,7 @@ public class CommandRegister {
                     .subscribe());
         });
 
-        handler.register("playtime", "Посмотреть игровое время по сикею. Принимает: ckey", (e, a)->{
+        handler.register("playtime", "Посмотреть игровое время по сикею.", "<ckey>", (e, a)->{
             var message = e.getMessage();
             if(a.length<1) {
                 sendReply(message, "Недостаточно аргументов. команда принимает:\n`ckey`");
@@ -70,7 +70,7 @@ public class CommandRegister {
             }
         });
 
-        handler.register("characters", "Посмотреть персонажей игрока. Принимает: ckey", (e, a)->{
+        handler.register("characters", "Посмотреть персонажей игрока.", "ckey", (e, a)->{
             var msg = e.getMessage();
             if(a.length<1) {
                 sendReply(msg, "Недостаточно аргументов. команда принимает:\n`ckey`");
