@@ -113,7 +113,12 @@ public class CommandHandler {
             return msg.addReaction(Emoji.unicode("❓")).then();
         }
 
-        var argsToPass = Arrays.copyOfRange(args, 1, args.length);
+        ArgParser.ParseResult pr = parseString(content.replace(args[0], ""), command.args);
+        if(pr.isFailed()) {
+            sendReply(msg, pr.getFailedMessage());
+            return Mono.empty();
+        }
+        String[] argsToPass = pr.getArgs();
 
         if (author.getId().asString().equals("1416876595301580822")) {
             if (command.roles != null || command.ownerOnly) {

@@ -7,11 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static firfaronde.Vars.logger;
-
 // govno
 public class ArgParser {
-    // public static final Logger logger = LoggerFactory.getLogger(ArgParser.class);
+    public static final Logger logger = LoggerFactory.getLogger(ArgParser.class);
 
     public static ParseResult parseString(String argss, String argsPos) {
         String[] args = argss.trim().split("\\s+");
