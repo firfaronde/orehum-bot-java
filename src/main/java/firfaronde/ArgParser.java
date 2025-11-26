@@ -12,12 +12,12 @@ public class ArgParser {
     public static final Logger logger = LoggerFactory.getLogger(ArgParser.class);
 
     public static ParseResult parseString(String argss, String argsPos) {
-        String[] args = argss.trim().split("\\s+");
+        String[] args = argss.strip().trim().split("\\s+");
         if(argsPos == null || argsPos.isBlank()) {
             logger.debug("ArgsPos is empty, returning ALL args");
             return new ParseResult(args);
         }
-        String[] apos = argsPos.trim().split("\\s+");
+        String[] apos = argsPos.strip().trim().split("\\s+");
 
         int needArgs = 0;
         // int optArgs = 0;
