@@ -33,8 +33,9 @@ public class ArgParser {
 
         logger.debug("Args provided {}\nArgs need {}\nArgs {}\nArgsPos {}", args.length, needArgs, argss, argsPos);
 
-        if(needArgs > args.length)
-            return new ParseResult("Слишком мало аргумнетов.");
+        if(args.length < needArgs) {
+            return new ParseResult("Слишком мало аргументов.");
+        }
 
         for(int i = 0; i<apos.length; i += 1) {
             String a = apos[i];
