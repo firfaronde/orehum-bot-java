@@ -21,7 +21,6 @@ public class ArgParser {
         // int optArgs = 0;
 
         List<String> args2 = new ArrayList<>();
-        ParseResult result;
 
         for(String a : apos) {
             if(a.startsWith("<") && a.endsWith(">"))
@@ -29,6 +28,8 @@ public class ArgParser {
             /*if(a.startsWith("[") && a.endsWith("]"))
                 optArgs += 1;*/
         }
+
+        logger.info("Args provided {}\nArgs need {}\nArgs {}\nArgsPos {}", args.length, needArgs, argss, argsPos)
 
         if(needArgs > args.length)
             return new ParseResult("Слишком мало аргумнетов.");
