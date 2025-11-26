@@ -7,7 +7,8 @@ import firfaronde.func.Bool;
 import static firfaronde.Vars.executor;
 
 public class CommandData {
-    final String name, description, args = null;
+    final String name, description;
+    String args = null;
     final Executor c;
     final Snowflake[] roles;
 
