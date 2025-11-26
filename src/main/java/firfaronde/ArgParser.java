@@ -10,9 +10,11 @@ import java.util.*;
 // govno
 public class ArgParser {
     public static final Logger logger = LoggerFactory.getLogger(ArgParser.class);
+
     public static ParseResult parseString(String argss, String argsPos) {
         String[] args = argss.trim().split("\\s+");
         if(argsPos == null || argsPos.isBlank()) {
+            logger.debug("Args is empty");
             return new ParseResult(args);
         }
         String[] apos = argsPos.trim().split("\\s+");
@@ -29,7 +31,7 @@ public class ArgParser {
                 optArgs += 1;*/
         }
 
-        logger.info("Args provided {}\nArgs need {}\nArgs {}\nArgsPos {}", args.length, needArgs, argss, argsPos);
+        logger.debug("Args provided {}\nArgs need {}\nArgs {}\nArgsPos {}", args.length, needArgs, argss, argsPos);
 
         if(needArgs > args.length)
             return new ParseResult("Слишком мало аргумнетов.");
