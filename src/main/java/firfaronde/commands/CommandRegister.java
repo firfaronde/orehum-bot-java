@@ -26,7 +26,7 @@ public class CommandRegister {
             var msg = new StringBuilder();
             msg.append("```\nCommands:\n");
             for(CommandData c : handler.commands)
-                msg.append("  ").append(c.name).append(" ").append(c.description).append("\n");
+                msg.append("  ").append(c.name).append(" ").append(c.description).append(c.args == null ? "" : "\n    "+c.args).append("\n");
             msg.append("```");
             var message = e.getMessage();
             message.getChannel().subscribe((ch)-> ch.createMessage(MessageCreateSpec
@@ -222,6 +222,13 @@ public class CommandRegister {
                 sendReply(msg, "Ошибка при отправке запроса\n"+er.getMessage());
             }
         }, devRoleId, ownerRoleId);
+
+        handler.register("args", "Test args", "<a1> <a2> <a3...>", (e, a)->{
+            StringBuilder sb = new StringBuilder();
+            for(String s : a)
+                sb.append(s).append("\n");
+            sendReply(e.getMessage(), sb.toString());
+        });
     }
 
 }

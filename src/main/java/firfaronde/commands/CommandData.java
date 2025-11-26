@@ -7,8 +7,7 @@ import firfaronde.func.Bool;
 import static firfaronde.Vars.executor;
 
 public class CommandData {
-    final String name;
-    final String description;
+    final String name, description, args = null;
     final Executor c;
     final Snowflake[] roles;
 
@@ -31,23 +30,24 @@ public class CommandData {
         this.roles=null;
         // this.checks=null;
     }
-    /*
-    public CommandData(String name, String description, Executor c, Bool[] checks) {
-        this.name=name;
-        this.description=description;
-        this.c=c;
-        this.roles=null;
-        this.checks=checks;
-    }
 
-    public CommandData(String name, String description, Executor c, Snowflake[] roles, Bool[] checks) {
+    public CommandData(String name, String description, Executor c, Snowflake[] roles, String args) {
         this.name=name;
         this.description=description;
         this.c=c;
         this.roles=roles;
-        this.checks=checks;
+        // this.checks=null;
+        this.args = args;
     }
-     */
+
+    public CommandData(String name, String description, Executor c, String args) {
+        this.name=name;
+        this.description=description;
+        this.c=c;
+        this.roles=null;
+        // this.checks=null;
+        this.args = args;
+    }
 
     public void execute(MessageCreateEvent e, String[] args) {
         executor.submit(()->{

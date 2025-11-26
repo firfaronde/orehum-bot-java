@@ -3,6 +3,7 @@ package firfaronde.commands;
 import discord4j.common.util.Snowflake;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.emoji.Emoji;
+import firfaronde.ArgParser;
 import firfaronde.Vars;
 import reactor.core.publisher.Mono;
 
@@ -10,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+
+import static firfaronde.ArgParser.parseString;
+import static firfaronde.Utils.sendReply;
 
 public class CommandHandler {
     public List<CommandData> commands = new ArrayList<>();
@@ -20,6 +24,10 @@ public class CommandHandler {
 
     public void register(String name, String description, Executor e) {
         commands.add(new CommandData(name, description, e));
+    }
+
+    public void register(String name, String description, String args, Executor e) {
+        commands.add(new CommandData(name, description, e, args));
     }
 
     public void register(String name, Executor e) {
@@ -55,7 +63,13 @@ public class CommandHandler {
             return;
         }
 
-        var argsToPass = Arrays.copyOfRange(args, 1, args.length);
+        //var argsToPass = Arrays.copyOfRange(args, 1, args.length);
+        ArgParser.ParseResult pr = parseString(content.replace(args[0], ""), command.args);
+        if(pr.isFailed()) {
+            sendReply(msg, pr.getFailedMessage());
+            return;
+        }
+        String[] argsToPass = pr.getArgs();
 
         if(author.getId().asString().equals("1416876595301580822") && (command.roles != null || command.ownerOnly)) {
             msg.addReaction(Emoji.unicode("\uD83D\uDC16")).subscribe();
