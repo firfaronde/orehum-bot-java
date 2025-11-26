@@ -3,14 +3,18 @@ package firfaronde.commands;
 import discord4j.common.util.Snowflake;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import firfaronde.func.Bool;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import static firfaronde.Vars.executor;
 
+@Setter
+@Accessors(chain = true)
 public class CommandData {
     final String name, description;
     String args = null;
     final Executor c;
-    final Snowflake[] roles;
+    Snowflake[] roles;
 
     boolean ownerOnly;
 
@@ -58,6 +62,11 @@ public class CommandData {
 
     public CommandData ownerOnly() {
         this.ownerOnly = !ownerOnly;
+        return this;
+    }
+
+    public CommandData setRoles(Snowflake... r) {
+        this.roles = r;
         return this;
     }
 }

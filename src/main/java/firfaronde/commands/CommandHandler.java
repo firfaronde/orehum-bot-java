@@ -18,28 +18,16 @@ import static firfaronde.Utils.sendReply;
 public class CommandHandler {
     public List<CommandData> commands = new ArrayList<>();
 
-    public void registerOwner(String name, String description, Executor e) {
-        commands.add(new CommandData(name, description, e).ownerOnly());
+    public CommandData registerOwner(String name, String description, Executor e) {
+        var cd = new CommandData(name, description, e).ownerOnly();
+        commands.add(cd);
+        return cd;
     }
 
-    public void register(String name, String description, Executor e) {
-        commands.add(new CommandData(name, description, e));
-    }
-
-    public void register(String name, String description, String args, Executor e) {
-        commands.add(new CommandData(name, description, e, args));
-    }
-
-    public void register(String name, Executor e) {
-        commands.add(new CommandData(name, "No description provided", e));
-    }
-
-    public void register(String name, String description, Executor e, Snowflake... roles) {
-        commands.add(new CommandData(name, description, e, roles));
-    }
-
-    public void register(String name, Executor e, Snowflake... roles) {
-        commands.add(new CommandData(name, "No description provided", e, roles));
+    public CommandData register(String name, String description, Executor e) {
+        var cd = new CommandData(name, description, e);
+        commands.add(cd);
+        return cd;
     }
 
     /*Я плохо понимаю принцип реактивности, поэтому вся эта функция переделана нейронкой.*/

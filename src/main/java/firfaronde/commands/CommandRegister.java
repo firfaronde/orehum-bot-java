@@ -37,7 +37,7 @@ public class CommandRegister {
                     .subscribe());
         });
 
-        handler.register("playtime", "Посмотреть игровое время по сикею.", "<ckey>", (e, a)->{
+        handler.register("playtime", "Посмотреть игровое время по сикею.", (e, a)->{
             var message = e.getMessage();
             if(a.length<1) {
                 sendReply(message, "Недостаточно аргументов. команда принимает:\n`ckey`");
@@ -68,9 +68,9 @@ public class CommandRegister {
                 // System.out.println(err);
                 logger.error("Playtime failed!", err);
             }
-        });
+        }).setArgs("<ckey>");
 
-        handler.register("characters", "Посмотреть персонажей игрока.", "ckey", (e, a)->{
+        handler.register("characters", "Посмотреть персонажей игрока.", (e, a)->{
             var msg = e.getMessage();
             if(a.length<1) {
                 sendReply(msg, "Недостаточно аргументов. команда принимает:\n`ckey`");
@@ -107,7 +107,7 @@ public class CommandRegister {
                 sb.setLength(0);
             }
             sendEmbeds(msg, embeds.subList(0, Math.min(10, embeds.size())).toArray(new EmbedCreateSpec[0]));
-        });
+        }).setArgs("<ckey>");
 
         handler.registerOwner("gc", "", (e, a)->{
             System.gc();
@@ -153,7 +153,7 @@ public class CommandRegister {
             );
 
             sendReply(msg, id.map(integer -> "ID: " + integer).orElse("БД не вернула айдишник."));
-        });
+        }).setArgs("<ckey> <discord_id>");
 
         handler.registerOwner("addtier", "", (e, a)->{
             Message msg = e.getMessage();
@@ -201,7 +201,7 @@ public class CommandRegister {
             );
 
             sendReply(msg, tmp1 ? "Тир создан" : "Тир **не** создан");
-        });
+        }).setArgs("<sponsorId> <oocColor> <ghostTheme>");
 
         handler.register("stats", "Посмотреть стату бота", (e, a)->{
             String mem = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024 + " MB";
@@ -221,14 +221,14 @@ public class CommandRegister {
             } catch (Exception er) {
                 sendReply(msg, "Ошибка при отправке запроса\n"+er.getMessage());
             }
-        }, devRoleId, ownerRoleId);
+        }).setRoles(devRoleId, ownerRoleId);
 
-        handler.register("args", "Test args", "<a1> <a2> <a3...>", (e, a)->{
+        handler.register("args", "Test args", (e, a)->{
             StringBuilder sb = new StringBuilder();
             for(String s : a)
                 sb.append(s).append("\n");
             sendReply(e.getMessage(), sb.toString());
-        });
+        }).setArgs("<a1> <a2> <a3...>");
     }
 
 }
