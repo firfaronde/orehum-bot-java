@@ -124,12 +124,12 @@ public class CommandRegister {
                     String[] status = getStatus();
                     var em = EmbedCreateSpec.builder().color(Color.GREEN);
                     em.addField(status[0], status[1], false);
-                    hmm.edit(MessageEditSpec.builder().content("").addEmbed(em.build()).build()).subscribe();
+                    hmm.edit(MessageEditSpec.builder().contentOrNull("").addEmbed(em.build()).build()).subscribe();
                 } catch (Exception err) {
                     hmm.edit(
                             MessageEditSpec
                                     .builder()
-                                    .content("Произошла ошибка.\n" + err)
+                                    .contentOrNull("Произошла ошибка.\n" + err)
                                     .build()
                     ).subscribe();
                     // System.out.println(err);
@@ -210,9 +210,7 @@ public class CommandRegister {
             sendReply(e.getMessage(), mem+"\n**Пул подключений**\nВсего: "+pool.getTotalConnections()+"\nАктивно: "+pool.getActiveConnections()+"\nСвободны: "+pool.getIdleConnections()+"\nЖдут: "+pool.getThreadsAwaitingConnection());
         });
 
-        handler.register("nukeserver", "Просто взорви этот сервер!", (e, a)->{
-            sendReply(e.getMessage(), "https://tenor.com/view/explosion-mushroom-cloud-atomic-bomb-bomb-boom-gif-4464831");
-        });
+        handler.register("nukeserver", "Просто взорви этот сервер!", (e, a)-> sendReply(e.getMessage(), "https://tenor.com/view/explosion-mushroom-cloud-atomic-bomb-bomb-boom-gif-4464831"));
 
         handler.register("updateserver", "Отправить сервер на обновление", (e, a)->{
             Message msg = e.getMessage();

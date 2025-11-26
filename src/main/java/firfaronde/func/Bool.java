@@ -1,6 +1,6 @@
 package firfaronde.func;
 
 @FunctionalInterface
-public interface Bool {
-    boolean accept(Object obj);
+public interface Bool<T> {
+    boolean accept(T obj);
 }

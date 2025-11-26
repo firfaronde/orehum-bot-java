@@ -22,6 +22,7 @@ import java.util.Map;
 
 import static firfaronde.Vars.*;
 
+@SuppressWarnings("unchecked")
 public class Utils {
     public static void sendEmbedToChannel(Snowflake id, EmbedCreateSpec e) {
         gateway.getChannelById(id)
