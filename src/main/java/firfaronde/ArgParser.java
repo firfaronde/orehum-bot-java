@@ -56,6 +56,17 @@ public class ArgParser {
         return new ParseResult(args2.toArray(new String[0]));
     }
 
+    public static void processArgsPos(List<CommandData> cd) {
+        for (CommandData c : cd) {
+            if (c.args == null || c.args.isBlank()) continue;
+
+            String[] args = c.args.split(" ");
+            if (args.length > 1 && (args[0].endsWith("...>") || args[0].endsWith("...]"))) {
+                logger.warn("Args in command {} after arg {} will be ignored", c.name, args[0]);
+            }
+        }
+    }
+
     @Getter
     public static class ParseResult {
         String[] args;

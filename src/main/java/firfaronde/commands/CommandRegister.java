@@ -6,6 +6,7 @@ import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.core.spec.MessageCreateSpec;
 import discord4j.core.spec.MessageEditSpec;
 import discord4j.rest.util.Color;
+import firfaronde.ArgParser;
 import firfaronde.Bundle;
 import firfaronde.database.models.JobPreference;
 import firfaronde.database.models.PlayTime;
@@ -228,7 +229,8 @@ public class CommandRegister {
             for(String s : a)
                 sb.append(s).append("\n");
             sendReply(e.getMessage(), sb.toString());
-        }).setArgs("<a1> <a2> <a3...>");
-    }
+        }).setArgs("<a5...> <a1> <a2> <a3...>");
 
+        ArgParser.processArgsPos(handler.commands);
+    }
 }
