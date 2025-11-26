@@ -20,5 +20,4 @@
 
     <logger name="discord4j" level="INFO"/>
     <logger name="com.zaxxer.hikari" level="INFO"/>
-    <logger name="firfaronde.ArgParser" level="DEBUG"/>
 </configuration>
