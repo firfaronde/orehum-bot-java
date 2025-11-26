@@ -34,7 +34,7 @@ public class ArgParser {
         logger.debug("Args provided {}\nArgs need {}\nArgs {}\nArgsPos {}", args.length, needArgs, argss, argsPos);
 
         if(needArgs > args.length || (args.length == 1 && args[0].isEmpty()))
-            return new ParseResult("Слишком мало аргумнетов. Требуется:\n"+argsPos);
+            return new ParseResult("Слишком мало аргумнетов. Требуется:\n`"+argsPos+"`");
 
         for(int i = 0; i<apos.length; i += 1) {
             String a = apos[i];
@@ -46,7 +46,7 @@ public class ArgParser {
                 try {
                     args2.add(args[i]);
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    return new ParseResult("Аргумент "+a+" не приведен.");
+                    return new ParseResult("Аргумент `"+a+"` не приведен.");
                 }
             } else {
                 logger.info("Unkown arg type provided {}", a);
