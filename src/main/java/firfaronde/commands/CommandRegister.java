@@ -227,7 +227,7 @@ public class CommandRegister {
             for(String s : a)
                 sb.append(s).append("\n");
             sendReply(e.getMessage(), sb.toString());
-        }).setArgs("<a5...> <a1> <a2> <a3...>");
+        }).setArgs("<a>").ownerOnly();
 
         ArgParser.processArgsPos(handler.commands);
     }

@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import static firfaronde.Vars.executor;
+import static firfaronde.Vars.*;
 
 @Setter
 @Accessors(chain = true)
@@ -57,8 +57,16 @@ public class CommandData {
 
     public void execute(MessageCreateEvent e, String[] args) {
         executor.submit(()->{
-            c.accept(e, args);
+            try {
+                c.accept(e, args);
+            } catch (Exception err) {
+                handleError(err, e, args, this);
+            }
         });
+    }
+
+    public void handleError(Throwable err, MessageCreateEvent event, String[] args, CommandData cd) {
+        logger.error("Command {} failed with args {}!", cd.name, args, err);
     }
 
     public CommandData ownerOnly() {

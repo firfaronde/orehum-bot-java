@@ -4,7 +4,10 @@ import discord4j.common.util.Snowflake;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.emoji.Emoji;
 import firfaronde.ArgParser;
+import firfaronde.Main;
 import firfaronde.Vars;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
