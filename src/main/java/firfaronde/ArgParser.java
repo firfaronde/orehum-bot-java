@@ -7,7 +7,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-// govno
+/**
+ * chaos of bad code.
+ * parses positional args
+ * */
 public class ArgParser {
     public static final Logger logger = LoggerFactory.getLogger(ArgParser.class);
 

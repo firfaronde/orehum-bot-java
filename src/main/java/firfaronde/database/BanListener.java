@@ -48,21 +48,7 @@ public class BanListener {
                         if(sbopt.isEmpty())
                             continue;
                         ServerBan sb = sbopt.get();
-                        Optional<String> playerCkey = Player.getCkey(sb.playerUserId), adminCkey = Player.getCkey(sb.banningAdmin);
-                        StringBuilder stb = new StringBuilder();
-                        if(playerCkey.isPresent())
-                            stb.append("Нарушитель: "+playerCkey.get()).append("\n");
-                        stb.append("Администратор: "+adminCkey.orElse("Система")).append("\n")
-                                .append("Раунд: "+sb.roundId).append("\n")
-                                .append("Срок: <t:"+sb.expirationTime.toEpochSecond()+":R>").append("\n\n")
-                                .append("Причина: "+sb.reason);
-                        if(stb.length()>1024) {
-                            stb.setLength(1021);
-                            stb.append("...");
-                        }
-                        EmbedCreateSpec.Builder embed = EmbedCreateSpec.builder().color(Color.RED);
-                        embed.addField("Серверный бан "+sb.serverBanId, stb.toString(), false);
-                        sendEmbedToChannel(bansChannel, embed.build());
+                        sb.sendBan(bansChannel);
                     }
                 }
                 Thread.sleep(1000);

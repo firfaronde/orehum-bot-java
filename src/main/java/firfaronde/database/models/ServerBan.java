@@ -1,5 +1,8 @@
 package firfaronde.database.models;
 
+import discord4j.common.util.Snowflake;
+import discord4j.core.spec.EmbedCreateSpec;
+import discord4j.rest.util.Color;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
@@ -14,6 +17,8 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.UUID;
 
+import static firfaronde.Utils.sendEmbedToChannel;
+import static firfaronde.Vars.bansChannel;
 import static firfaronde.database.Database.executeQueryAsync;
 
 @ToString
@@ -60,5 +65,22 @@ public class ServerBan {
                 rs.getObject("round_id") != null ? rs.getInt("round_id") : null,
                 rs.getInt("severity")
         );
+    }
+
+    public void sendBan(Snowflake channel) {
+        Optional<String> playerCkey = Player.getCkey(playerUserId), adminCkey = Player.getCkey(banningAdmin);
+        StringBuilder stb = new StringBuilder();
+        playerCkey.ifPresent(s -> stb.append("Нарушитель: ").append(s).append("\n"));
+        stb.append("Администратор: ").append(adminCkey.orElse("Система")).append("\n")
+                .append("Раунд: ").append(roundId).append("\n")
+                .append("Срок: <t:").append(expirationTime.toEpochSecond()).append(":R>").append("\n\n")
+                .append("Причина: ").append(reason);
+        if(stb.length()>1024) {
+            stb.setLength(1021);
+            stb.append("...");
+        }
+        EmbedCreateSpec.Builder embed = EmbedCreateSpec.builder().color(Color.RED);
+        embed.addField("Серверный бан "+serverBanId, stb.toString(), false);
+        sendEmbedToChannel(channel, embed.build());
     }
 }

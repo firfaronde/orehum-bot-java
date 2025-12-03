@@ -18,7 +18,7 @@ public class CommandData {
     final Executor c;
     public Snowflake[] roles;
 
-    boolean ownerOnly;
+    boolean ownerOnly, hidden;
 
     // final Bool[] checks;
 
@@ -72,7 +72,12 @@ public class CommandData {
     }
 
     public CommandData ownerOnly() {
-        this.ownerOnly = !ownerOnly;
+        this.ownerOnly = true;
+        return this;
+    }
+
+    public CommandData hidden() {
+        this.hidden = true;
         return this;
     }
 
