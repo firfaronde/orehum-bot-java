@@ -20,6 +20,7 @@ import static firfaronde.Vars.*;
 import static firfaronde.database.Database.*;
 
 import firfaronde.database.models.Character;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.http.HttpResponse;
@@ -238,17 +239,22 @@ public class CommandRegister {
         }).setArgs("<a>").ownerOnly();
 
         handler.register("nuke", "", (e, a) -> {
+
             var authorId = e.getMessage().getAuthor().get().getId();
+
             var channel = e.getMessage()
                     .getChannel()
                     .ofType(GuildMessageChannel.class);
+
             channel.flatMapMany(ch ->
+
                     ch.getMessagesBefore(Snowflake.of(Instant.now()))
                             .filter(msg ->
                                     msg.getAuthor()
                                             .map(u -> u.getId().equals(authorId))
                                             .orElse(false)
                             )
+
                             .flatMap(msg -> {
                                 if (msg.getTimestamp().isAfter(
                                         Instant.now().minus(14, ChronoUnit.DAYS)
@@ -259,16 +265,16 @@ public class CommandRegister {
                             })
                             .buffer(100)
                             .flatMap(batch ->
-                                    batch.isEmpty()
-                                            ? Mono.empty()
-                                            : ch.bulkDelete(
-                                            batch.stream()
-                                                    .map(Message::getId)
-                                                    .toList()
+                                    ch.bulkDelete(
+                                            Flux.fromIterable(
+                                                    batch.stream()
+                                                            .map(Message::getId)
+                                                            .toList()
+                                            )
                                     )
                             )
-
             ).subscribe();
+
         }).ownerOnly();
 
         ArgParser.processArgsPos(handler.commands);
