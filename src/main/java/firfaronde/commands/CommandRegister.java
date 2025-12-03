@@ -238,45 +238,6 @@ public class CommandRegister {
             sendReply(e.getMessage(), sb.toString());
         }).setArgs("<a>").ownerOnly();
 
-        handler.register("nuke", "", (e, a) -> {
-
-            var authorId = e.getMessage().getAuthor().get().getId();
-
-            var channel = e.getMessage()
-                    .getChannel()
-                    .ofType(GuildMessageChannel.class);
-
-            channel.flatMapMany(ch ->
-
-                    ch.getMessagesBefore(Snowflake.of(Instant.now()))
-                            .filter(msg ->
-                                    msg.getAuthor()
-                                            .map(u -> u.getId().equals(authorId))
-                                            .orElse(false)
-                            )
-
-                            .flatMap(msg -> {
-                                if (msg.getTimestamp().isAfter(
-                                        Instant.now().minus(14, ChronoUnit.DAYS)
-                                )) {
-                                    return Mono.just(msg);
-                                }
-                                return msg.delete().then(Mono.empty());
-                            })
-                            .buffer(100)
-                            .flatMap(batch ->
-                                    ch.bulkDelete(
-                                            Flux.fromIterable(
-                                                    batch.stream()
-                                                            .map(Message::getId)
-                                                            .toList()
-                                            )
-                                    )
-                            )
-            ).subscribe();
-
-        }).ownerOnly();
-
         ArgParser.processArgsPos(handler.commands);
     }
 }
