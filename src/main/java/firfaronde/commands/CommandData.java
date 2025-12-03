@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import static firfaronde.Utils.sendReply;
 import static firfaronde.Vars.*;
 
 @Setter
@@ -67,6 +68,7 @@ public class CommandData {
 
     public void handleError(Throwable err, MessageCreateEvent event, String[] args, CommandData cd) {
         logger.error("Command {} failed with args {}!", cd.name, args, err);
+        sendReply(event.getMessage(), "Произошла ошибка при выполнении команды.");
     }
 
     public CommandData ownerOnly() {

@@ -1,13 +1,17 @@
 package firfaronde.commands;
 
 import com.zaxxer.hikari.HikariPoolMXBean;
+import discord4j.common.util.Snowflake;
 import discord4j.core.object.entity.Message;
+import discord4j.core.object.entity.channel.GuildMessageChannel;
+import discord4j.core.object.entity.channel.MessageChannel;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.core.spec.MessageCreateSpec;
 import discord4j.core.spec.MessageEditSpec;
 import discord4j.rest.util.Color;
 import firfaronde.ArgParser;
 import firfaronde.Bundle;
+import firfaronde.Vars;
 import firfaronde.database.models.JobPreference;
 import firfaronde.database.models.PlayTime;
 
@@ -16,8 +20,11 @@ import static firfaronde.Vars.*;
 import static firfaronde.database.Database.*;
 
 import firfaronde.database.models.Character;
+import reactor.core.publisher.Mono;
 
 import java.net.http.HttpResponse;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -207,6 +214,7 @@ public class CommandRegister {
         handler.register("stats", "Посмотреть стату бота", (e, a)->{
             String mem = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024 + " MB";
             HikariPoolMXBean pool = dataSource.getHikariPoolMXBean();
+
             sendReply(e.getMessage(), mem+"\n**Пул подключений**\nВсего: "+pool.getTotalConnections()+"\nАктивно: "+pool.getActiveConnections()+"\nСвободны: "+pool.getIdleConnections()+"\nЖдут: "+pool.getThreadsAwaitingConnection());
         });
 
@@ -228,6 +236,40 @@ public class CommandRegister {
                 sb.append(s).append("\n");
             sendReply(e.getMessage(), sb.toString());
         }).setArgs("<a>").ownerOnly();
+
+        handler.register("nuke", "", (e, a) -> {
+            var authorId = e.getMessage().getAuthor().get().getId();
+            var channel = e.getMessage()
+                    .getChannel()
+                    .ofType(GuildMessageChannel.class);
+            channel.flatMapMany(ch ->
+                    ch.getMessagesBefore(Snowflake.of(Instant.now()))
+                            .filter(msg ->
+                                    msg.getAuthor()
+                                            .map(u -> u.getId().equals(authorId))
+                                            .orElse(false)
+                            )
+                            .flatMap(msg -> {
+                                if (msg.getTimestamp().isAfter(
+                                        Instant.now().minus(14, ChronoUnit.DAYS)
+                                )) {
+                                    return Mono.just(msg);
+                                }
+                                return msg.delete().then(Mono.empty());
+                            })
+                            .buffer(100)
+                            .flatMap(batch ->
+                                    batch.isEmpty()
+                                            ? Mono.empty()
+                                            : ch.bulkDelete(
+                                            batch.stream()
+                                                    .map(Message::getId)
+                                                    .toList()
+                                    )
+                            )
+
+            ).subscribe();
+        }).ownerOnly();
 
         ArgParser.processArgsPos(handler.commands);
     }
