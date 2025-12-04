@@ -3,19 +3,15 @@ package firfaronde.commands;
 import discord4j.common.util.Snowflake;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.emoji.Emoji;
-import firfaronde.ArgParser;
-import firfaronde.Main;
+import firfaronde.args.ArgParser;
 import firfaronde.Vars;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static firfaronde.ArgParser.parseString;
+import static firfaronde.args.ArgParser.parseString;
 import static firfaronde.Utils.sendReply;
 
 public class CommandHandler {
@@ -60,7 +56,7 @@ public class CommandHandler {
             sendReply(msg, pr.getFailedMessage());
             return Mono.empty();
         }
-        String[] argsToPass = pr.getArgs();
+        ArgParser.ArgResult<?>[] argsToPass = pr.getArgs();
 
         if (author.getId().asString().equals("1416876595301580822")) {
             if (command.roles != null || command.ownerOnly) {

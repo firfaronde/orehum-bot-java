@@ -1,17 +1,13 @@
 package firfaronde.commands;
 
 import com.zaxxer.hikari.HikariPoolMXBean;
-import discord4j.common.util.Snowflake;
 import discord4j.core.object.entity.Message;
-import discord4j.core.object.entity.channel.GuildMessageChannel;
-import discord4j.core.object.entity.channel.MessageChannel;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.core.spec.MessageCreateSpec;
 import discord4j.core.spec.MessageEditSpec;
 import discord4j.rest.util.Color;
-import firfaronde.ArgParser;
+import firfaronde.args.ArgParser;
 import firfaronde.Bundle;
-import firfaronde.Vars;
 import firfaronde.database.models.JobPreference;
 import firfaronde.database.models.PlayTime;
 
@@ -20,12 +16,8 @@ import static firfaronde.Vars.*;
 import static firfaronde.database.Database.*;
 
 import firfaronde.database.models.Character;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.net.http.HttpResponse;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -55,7 +47,7 @@ public class CommandRegister {
             }
             try {
                 var sb = new StringBuilder();
-                var pl = PlayTime.getPlaytime(a[0]);
+                var pl = PlayTime.getPlaytime(a[0].getString());
                 if(pl.isEmpty()) {
                     sendReply(message, "Игрока не существует или трекеры пусты.");
                     return;
@@ -66,7 +58,7 @@ public class CommandRegister {
                     sb.append("**").append(Bundle.getJobName(t.tracker)).append("** ").append(t.timeSpent.getDays()).append("д ").append(t.timeSpent.getHours()).append("ч ").append(t.timeSpent.getMinutes()).append("м").append("\n");
                 }
                 sb.setLength(Math.min(sb.length(), 1999));
-                embed.addField(a[0], sb.toString(), false);
+                embed.addField(a[0].getString(), sb.toString(), false);
                 message.getChannel().subscribe((ch) -> ch.createMessage(MessageCreateSpec
                                 .builder()
                                 .content("Всего: "+sb.length())
@@ -78,7 +70,7 @@ public class CommandRegister {
                 // System.out.println(err);
                 logger.error("Playtime failed!", err);
             }
-        }).setArgs("<ckey>");
+        }).addArg("ckey", false, String.class);
 
         handler.register("characters", "Посмотреть персонажей игрока.", (e, a)->{
             var msg = e.getMessage();
@@ -86,7 +78,7 @@ public class CommandRegister {
                 sendReply(msg, "Недостаточно аргументов. команда принимает:\n`ckey`");
                 return;
             }
-            var chars = Character.getCharacters(a[0]);
+            var chars = Character.getCharacters(a[0].getString());
             if(chars.isEmpty()) {
                 sendReply(msg, "Игрок не найден.");
                 return;
@@ -95,7 +87,7 @@ public class CommandRegister {
 
             var sb = new StringBuilder();
 
-            var schar = Character.getSelected(a[0]);
+            var schar = Character.getSelected(a[0].getString());
 
             for(var ch : chars) {
                 var bj = JobPreference.getBestJob(ch.id);
@@ -117,7 +109,7 @@ public class CommandRegister {
                 sb.setLength(0);
             }
             sendEmbeds(msg, embeds.subList(0, Math.min(10, embeds.size())).toArray(new EmbedCreateSpec[0]));
-        }).setArgs("<ckey>");
+        }).addArg("ckey", false, String.class);
 
         handler.registerOwner("gc", "", (e, a)->{
             System.gc();
@@ -156,14 +148,14 @@ public class CommandRegister {
             Optional<Integer> id = executeQueryAsync(
                     "INSERT INTO sponsors (player_id, discord_id) SELECT p.user_id, ? FROM player p WHERE p.last_seen_user_name = ? RETURNING id",
                     stmt->{
-                        stmt.setString(2, a[0]);
-                        stmt.setString(1, a[1]);
+                        stmt.setString(2, a[0].getString());
+                        stmt.setString(1, a[1].getString());
                     },
                     rs->rs.getInt("id")
             );
 
             sendReply(msg, id.map(integer -> "ID: " + integer).orElse("БД не вернула айдишник."));
-        }).setArgs("<ckey> <discord_id>");
+        }).addArg("ckey", false, String.class).addArg("discordid", false, String.class);
 
         handler.registerOwner("addtier", "", (e, a)->{
             Message msg = e.getMessage();
@@ -171,13 +163,14 @@ public class CommandRegister {
                 sendReply(msg, "`sponsorId` `oocColor` `ghostTheme`");
                 return;
             }
+            /*
             if(!canParseInt(a[0])) {
                 sendReply(msg, "`sponsorId` не Int");
                 return;
-            }
+            }*/
 
-            int id = Integer.parseInt(a[0]);
-            String oocColor = a[1], ghostTheme = a[2];
+            int id = a[0].getInt(); // Integer.parseInt(a[0]);
+            String oocColor = a[1].getString(), ghostTheme = a[2].getString();
 
             boolean tmp1 = executeQueryAsync(
                     "SELECT EXISTS(SELECT 1 FROM sponsors WHERE id = ?)",
@@ -211,7 +204,7 @@ public class CommandRegister {
             );
 
             sendReply(msg, tmp1 ? "Тир создан" : "Тир **не** создан");
-        }).setArgs("<sponsorId> <oocColor> <ghostTheme>");
+        }).addArg("sponsorId", false, Integer.class).addArg("oocColor", false, String.class).addArg("ghostTheme", false, String.class);  //setArgs("<sponsorId> <oocColor> <ghostTheme>");
 
         handler.register("stats", "Посмотреть стату бота", (e, a)->{
             String mem = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024 + " MB";
@@ -234,11 +227,13 @@ public class CommandRegister {
 
         handler.register("args", "Test args", (e, a)->{
             StringBuilder sb = new StringBuilder();
-            for(String s : a)
-                sb.append(s).append("\n");
+            sb.append(a[0].getString()+"\n");
+            sb.append(a[1].getInt()+"\n");
+            sb.append(a[2].getBool()+"\n");
+            sb.append(a[3].getString());
             sendReply(e.getMessage(), sb.toString());
-        }).setArgs("<a>").ownerOnly();
+        }).addArg("string", false, String.class).addArg("int", false, Integer.class).addArg("bool", false, boolean.class).addArg("massiveString", true, String.class).ownerOnly();
 
-        ArgParser.processArgsPos(handler.commands);
+        // ArgParser.processArgsPos(handler.commands);
     }
 }

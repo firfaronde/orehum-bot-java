@@ -44,7 +44,7 @@ public class Database {
     }
 
     /**
-     * @author https://github.com/ols45234
+     * @author <a href="https://github.com/ols45234">ols45234</a>
      * */
     public static <T> Optional<T> executeQueryAsync(String sql, ThrowingConsumer<PreparedStatement> parameterSetter, SQLFunction<ResultSet, T> mapper) {
         try (Connection conn = dataSource.getConnection();
@@ -65,7 +65,7 @@ public class Database {
         }
     }
     /**
-     * @author https://github.com/ols45234
+     * @author <a href="https://github.com/ols45234">ols45234</a>
      * */
     public static boolean executeUpdate(String sql, ThrowingConsumer<PreparedStatement> parameterSetter) {
         try (Connection conn = dataSource.getConnection();
@@ -82,7 +82,7 @@ public class Database {
         }
     }
     /**
-     * @author https://github.com/ols45234
+     * @author <a href="https://github.com/ols45234">ols45234</a>
      * */
     public static <T> List<T> executeQueryList(String sql, ThrowingConsumer<PreparedStatement> parameterSetter, SQLFunction<ResultSet, T> mapper) {
         List<T> results = new ArrayList<>();
@@ -103,14 +103,14 @@ public class Database {
         return results;
     }
     /**
-     * @author https://github.com/ols45234
+     * @author <a href="https://github.com/ols45234">ols45234</a>
      * */
     @FunctionalInterface
     public interface ThrowingConsumer<T> {
         void accept(T t) throws SQLException;
     }
     /**
-     * @author https://github.com/ols45234
+     * @author <a href="https://github.com/ols45234">ols45234</a>
      * */
     @FunctionalInterface
     public interface SQLFunction<T, R> {
