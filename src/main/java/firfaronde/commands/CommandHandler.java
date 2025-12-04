@@ -51,7 +51,7 @@ public class CommandHandler {
             return msg.addReaction(Emoji.unicode("❓")).then();
         }
 
-        ArgParser.ParseResult pr = parseString(content.replace(args[0], "").strip().trim(), command.args);
+        ArgParser.ParseResult pr = parseString(content.replace(args[0], "").strip(), command.args);
         if(pr.isFailed()) {
             sendReply(msg, pr.getFailedMessage());
             return Mono.empty();

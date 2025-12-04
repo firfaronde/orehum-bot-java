@@ -65,7 +65,7 @@ public class ArgParser {
         if(neededArgs == null || neededArgs.length == 0)
             return new ParseResult(new ArgResult[0]);
         argss = argss.strip();
-        String[] args = argss.strip().split("\\s+");
+        String[] args = argss.isEmpty() ? new String[0] : argss.split("\\s+");
         int argsNeed = neededArgs.length;
 
         logger.debug("Args provided {}", argss);
