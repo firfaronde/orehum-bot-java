@@ -232,7 +232,7 @@ public class CommandRegister {
             sb.append(a[2].getBool()+"\n");
             sb.append(a[3].getString());
             sendReply(e.getMessage(), sb.toString());
-        }).addArg("string", false, String.class).addArg("int", false, Integer.class).addArg("bool", false, boolean.class).addArg("massiveString", true, String.class).ownerOnly();
+        }).addArg("string", false, String.class).addArg("int", false, Integer.class).addArg("bool", false, Boolean.class).addArg("massiveString", true, String.class).ownerOnly();
 
         // ArgParser.processArgsPos(handler.commands);
     }
