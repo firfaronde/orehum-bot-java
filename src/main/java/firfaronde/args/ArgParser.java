@@ -85,6 +85,7 @@ public class ArgParser {
                 try {
                     argsResult.add(new ArgResult<>(parse(tmp1, a.clazz)));
                 } catch (Exception e) {
+                    logger.debug("Unable to parse arg {}", a.name, e);
                     return new ParseResult("Невозможно привести аргумент `"+a.name+"` к типу "+a.clazz.getSimpleName());
                 }
                 break;
@@ -95,6 +96,7 @@ public class ArgParser {
                 } catch (ArrayIndexOutOfBoundsException ignore) {
                     return new ParseResult("Аргумент `"+a.name+"` не приведен.");
                 } catch (Exception e) {
+                    logger.debug("Unable to parse arg {}", a.name, e);
                     return new ParseResult("Невозможно привести аргумент `"+a.name+"` к типу "+a.clazz.getSimpleName());
                 }
             }
