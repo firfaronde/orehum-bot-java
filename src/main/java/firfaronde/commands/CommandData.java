@@ -74,4 +74,11 @@ public class CommandData {
         }
         return this;
     }
+
+    public String argsToString() {
+        StringBuilder sb = new StringBuilder();
+        for(ArgParser.Arg a : args)
+            sb.append("<"+a.name+">:"+a.clazz.getSimpleName()+" ");
+        return sb.toString();
+    }
 }

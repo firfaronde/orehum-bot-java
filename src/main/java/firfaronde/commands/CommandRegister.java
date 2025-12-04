@@ -28,7 +28,7 @@ public class CommandRegister {
             msg.append("```\nCommands:\n");
             for(CommandData c : handler.commands)
                 if(!c.hidden)
-                    msg.append("  ").append(c.name).append(" ").append(c.description).append(c.args == null ? "" : "\n  ->  "+c.args).append("\n");
+                    msg.append("  ").append(c.name).append(" ").append(c.description).append(c.args == null ? "" : "\n  ->  "+c.argsToString()).append("\n");
             msg.append("```");
             var message = e.getMessage();
             message.getChannel().subscribe((ch)-> ch.createMessage(MessageCreateSpec
