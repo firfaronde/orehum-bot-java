@@ -64,13 +64,14 @@ public class ArgParser {
     public static ParseResult parseString(String argss, Arg... neededArgs) {
         if(neededArgs == null || neededArgs.length == 0)
             return new ParseResult(new ArgResult[0]);
-        String[] args = argss.strip().trim().split("\\s+");
+        argss = argss.strip();
+        String[] args = argss.strip().split("\\s+");
         int argsNeed = neededArgs.length;
 
         logger.debug("Args provided {}", argss);
 
-        if(argsNeed > args.length || (args.length == 1 && args[0].isEmpty()))
-            return new ParseResult("Слишком мало аргумнетов. "+args.length+"/"+argsNeed);
+        if(argsNeed > args.length || argss.isEmpty() || (args.length == 1 && args[0].isEmpty()))
+            return new ParseResult("Слишком мало аргументов. "+args.length+"/"+argsNeed);
 
         List<ArgResult<?>> argsResult = new ArrayList<>();
 
