@@ -67,6 +67,8 @@ public class ArgParser {
         String[] args = argss.strip().trim().split("\\s+");
         int argsNeed = neededArgs.length;
 
+        logger.debug("Args provided {}", argss);
+
         if(argsNeed > args.length || (args.length == 1 && args[0].isEmpty()))
             return new ParseResult("Слишком мало аргумнетов. "+args.length+"/"+argsNeed);
 
