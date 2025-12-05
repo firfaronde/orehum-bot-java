@@ -254,6 +254,7 @@ public class CommandRegister {
                     break;
                 }
             }
+            sendReply(msg, "Успех!");
         }).addCkeyArg().addIntArg("hours").ownerOnly();
 
         // ArgParser.processArgsPos(handler.commands);
