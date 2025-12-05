@@ -6,6 +6,7 @@ import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.core.spec.MessageCreateSpec;
 import discord4j.core.spec.MessageEditSpec;
 import discord4j.rest.util.Color;
+import firfaronde.Main;
 import firfaronde.args.ArgParser;
 import firfaronde.Bundle;
 import firfaronde.database.models.JobPreference;
@@ -17,12 +18,16 @@ import static firfaronde.database.Database.*;
 
 import firfaronde.database.models.Character;
 import firfaronde.database.models.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Optional;
 
 public class CommandRegister {
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+
     public static void load() {
         handler.register("help", "Показать это сообщение", (e, args)->{
             var msg = new StringBuilder();
@@ -258,5 +263,7 @@ public class CommandRegister {
         }).addCkeyArg().addIntArg("hours").setRoles(devRoleId, ownerRoleId, adminsRoleId);
 
         // ArgParser.processArgsPos(handler.commands);
+        handler.sort();
+        logger.info("{} commands registered!", handler.commands.size());
     }
 }

@@ -8,6 +8,7 @@ import firfaronde.Vars;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +28,10 @@ public class CommandHandler {
         var cd = new CommandData(name, description, e);
         commands.add(cd);
         return cd;
+    }
+
+    public void sort() {
+        commands.sort(Comparator.comparing(cd -> cd.getName().toLowerCase()));
     }
 
     /*Я плохо понимаю принцип реактивности, поэтому вся эта функция переделана нейронкой.*/

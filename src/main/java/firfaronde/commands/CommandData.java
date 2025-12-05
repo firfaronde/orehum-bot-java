@@ -14,6 +14,7 @@ import static firfaronde.Utils.sendReply;
 import static firfaronde.Vars.*;
 
 @Setter
+@Getter
 @Accessors(chain = true)
 public class CommandData {
     public final String name, description;
