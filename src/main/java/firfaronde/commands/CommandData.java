@@ -18,7 +18,7 @@ import static firfaronde.Vars.*;
 @Accessors(chain = true)
 public class CommandData {
     public final String name, description;
-    public ArgParser.Arg[] args = null;
+    public ArgParser.Arg[] args = new ArgParser.Arg[0];
     final Executor c;
     public Snowflake[] roles;
 
