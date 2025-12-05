@@ -43,7 +43,7 @@ public class CommandRegister {
                         .append("\n")
                         .append("  ")
                         .append(c.description)
-                        .append("\n  ")
+                        .append("\n -> ")
                         .append(c.getArgsString())
                         .append("```");
                 sendReply(message, msg.toString());
