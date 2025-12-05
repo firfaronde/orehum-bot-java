@@ -7,8 +7,10 @@ import org.postgresql.util.PGInterval;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 import static firfaronde.database.Database.executeQueryList;
+import static firfaronde.database.Database.executeUpdate;
 
 @Data
 @AllArgsConstructor
@@ -32,6 +34,21 @@ public class PlayTime {
                 rs.getString("player_id"),
                 rs.getString("tracker"),
                 (PGInterval) rs.getObject("time_spent")
+        );
+    }
+
+    public static boolean addPlaytime(String usid, String tracker, int hours) {
+        return executeUpdate(
+                "INSERT INTO play_time (player_id, tracker, time_spent) " +
+                        "VALUES (?, ?, make_interval(hours => ?)) " +
+                        "ON CONFLICT (player_id, tracker) DO UPDATE " +
+                        "SET time_spent = play_time.time_spent + make_interval(hours => ?)",
+                stmt -> {
+                    stmt.setObject(1, UUID.fromString(usid));
+                    stmt.setString(2, tracker);
+                    stmt.setInt(3, hours);
+                    stmt.setInt(4, hours); // update
+                }
         );
     }
 

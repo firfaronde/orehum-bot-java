@@ -40,6 +40,8 @@ public class Vars {
 
     public static boolean enableBanListener;
 
+    public static String[] roleTrackers = {"Overall", "JobCargoTechnician", "JobTechnicalAssistant", "JobMedicalIntern", "JobResearchAssistant", "JobBorg", "JobPassenger", "JobMedicalDoctor", "JobEngineer"};
+
     public static void load() {
         env = Dotenv.load();
 

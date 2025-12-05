@@ -16,6 +16,7 @@ import static firfaronde.Vars.*;
 import static firfaronde.database.Database.*;
 
 import firfaronde.database.models.Character;
+import firfaronde.database.models.Player;
 
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
@@ -233,6 +234,27 @@ public class CommandRegister {
             sb.append(a[3].getString());
             sendReply(e.getMessage(), sb.toString());
         }).addArg("string", false, String.class).addArg("int", false, Integer.class).addArg("bool", false, Boolean.class).addArg("massiveString", true, String.class).ownerOnly();
+
+        handler.register("playtime", "", (e, a)->{
+            String ckey = a[0].getString();
+            Message msg = e.getMessage();
+
+            Optional<String> usido = Player.getUsid(ckey);
+            if(usido.isEmpty()) {
+                sendReply(msg, "Игрок не найден!");
+                return;
+            }
+
+            String usid = usido.get();
+            int h = a[1].getInt();
+
+            for(String t : roleTrackers) {
+                if(!PlayTime.addPlaytime(usid, t, h)) {
+                    sendReply(msg, "Произошла ошибка на "+t);
+                    break;
+                }
+            }
+        }).addCkeyArg().addIntArg("hours").ownerOnly();
 
         // ArgParser.processArgsPos(handler.commands);
     }

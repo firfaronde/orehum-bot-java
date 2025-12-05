@@ -81,4 +81,12 @@ public class CommandData {
             sb.append("<"+a.name+">:"+a.clazz.getSimpleName()+" ");
         return sb.toString();
     }
+
+    public CommandData addCkeyArg() {
+        return addArg("ckey", false, String.class);
+    }
+
+    public CommandData addIntArg(String name) {
+        return addArg(name, false, Integer.class);
+    }
 }
