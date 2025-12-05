@@ -72,8 +72,8 @@ public class ArgParser {
 
         logger.debug("Args provided {}", argss);
 
-        if(argsNeed > args.length || argss.isEmpty() || (args.length == 1 && args[0].isEmpty()))
-            return new ParseResult("Слишком мало аргументов. "+args.length+"/"+argsNeed);
+        if (args.length < argsNeed)
+            return new ParseResult("Слишком мало аргументов. " + args.length + "/" + argsNeed);
 
         List<ArgResult<?>> argsResult = new ArrayList<>();
 
