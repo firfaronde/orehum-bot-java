@@ -88,7 +88,7 @@ public class CommandHandler {
     }
 
 
-    CommandData findCommand(String name) {
+    public CommandData findCommand(String name) {
         for (CommandData c : commands) {
             if (c != null && c.name.equals(name)) {
                 return c;

@@ -66,7 +66,9 @@ public class ArgParser {
             return new ParseResult(new ArgResult[0]);
         argss = argss.strip();
         String[] args = argss.isEmpty() ? new String[0] : argss.split("\\s+");
-        int argsNeed = neededArgs.length;
+        int argsNeed = 0;
+        for(Arg a : neededArgs)
+            if(!a.opt) argsNeed += 1;
 
         logger.debug("Args provided {}", argss);
 
@@ -79,8 +81,28 @@ public class ArgParser {
 
         for(int i = 0; i<argsNeed; i+= 1) {
             Arg a = neededArgs[i];
-
-            if(a.greedy) {
+            if(a.opt) {
+                if(a.greedy) {
+                    tmp1 = String.join(" ", Arrays.copyOfRange(args, i, args.length));
+                    try {
+                        argsResult.add(new ArgResult<>(parse(tmp1, a.clazz)));
+                    } catch (Exception e) {
+                        logger.debug("Unable to parse arg {}", a.name, e);
+                        return new ParseResult("Невозможно привести аргумент `"+a.name+"` к типу "+a.clazz.getSimpleName());
+                    }
+                    break;
+                } else {
+                    try {
+                        tmp1 = args[i];
+                        argsResult.add(new ArgResult<>(parse(tmp1, a.clazz)));
+                    } catch (ArrayIndexOutOfBoundsException ignore) {
+                        continue;
+                    } catch (Exception e) {
+                        logger.debug("Unable to parse arg {}", a.name, e);
+                        return new ParseResult("Невозможно привести аргумент `"+a.name+"` к типу "+a.clazz.getSimpleName());
+                    }
+                }
+            } else if(a.greedy) {
                 tmp1 = String.join(" ", Arrays.copyOfRange(args, i, args.length));
                 try {
                     argsResult.add(new ArgResult<>(parse(tmp1, a.clazz)));
@@ -157,7 +179,7 @@ public class ArgParser {
     @AllArgsConstructor
     public static class Arg {
         public String name;
-        public boolean greedy;
+        public boolean greedy, opt;
         public Class<?> clazz;
     }
 

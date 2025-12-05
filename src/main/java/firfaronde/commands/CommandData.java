@@ -65,7 +65,7 @@ public class CommandData {
     }
 
     public CommandData addArg(String name, boolean greedy, Class<?> clazz) {
-        ArgParser.Arg arg = new ArgParser.Arg(name, greedy, clazz);
+        ArgParser.Arg arg = new ArgParser.Arg(name, greedy, false, clazz);
         if (this.args == null) {
             this.args = new ArgParser.Arg[]{arg};
         } else {
@@ -76,18 +76,62 @@ public class CommandData {
         return this;
     }
 
-    public String argsToString() {
+    public CommandData addArg(String name, boolean greedy, boolean optional, Class<?> clazz) {
+        ArgParser.Arg arg = new ArgParser.Arg(name, greedy, optional, clazz);
+        if (this.args == null) {
+            this.args = new ArgParser.Arg[]{arg};
+        } else {
+            ArgParser.Arg[] newArgs = Arrays.copyOf(this.args, this.args.length + 1);
+            newArgs[newArgs.length - 1] = arg;
+            this.args = newArgs;
+        }
+        return this;
+    }
+
+    public String getSimpleArgsString() {
         StringBuilder sb = new StringBuilder();
-        for(ArgParser.Arg a : args)
-            sb.append("<"+a.name+">:"+a.clazz.getSimpleName()+" ");
+
+        for (ArgParser.Arg a : args) {
+            String open  = a.opt ? "[" : "<";
+            String close = a.opt ? "]" : ">";
+            String dots  = a.greedy ? "..." : "";
+
+            sb.append(open)
+                    .append(a.name)
+                    .append(close)
+                    .append(dots)
+                    .append(" ");
+        }
+
         return sb.toString();
     }
 
+    public String getArgsString() {
+        StringBuilder sb = new StringBuilder();
+
+        for (ArgParser.Arg a : args) {
+            String open  = a.opt ? "[" : "<";
+            String close = a.opt ? "]" : ">";
+            String dots  = a.greedy ? "..." : "";
+
+            sb.append(open)
+                    .append(a.name)
+                    .append(close)
+                    .append(dots)
+                    .append(":")
+                    .append(a.clazz.getSimpleName())
+                    .append(" ");
+        }
+
+        return sb.toString();
+    }
+
+
     public CommandData addCkeyArg() {
-        return addArg("ckey", false, String.class);
+        return addArg("ckey", false, false, String.class);
     }
 
     public CommandData addIntArg(String name) {
-        return addArg(name, false, Integer.class);
+        return addArg(name, false, false, Integer.class);
     }
 }

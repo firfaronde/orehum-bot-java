@@ -30,20 +30,32 @@ public class CommandRegister {
 
     public static void load() {
         handler.register("help", "Показать это сообщение", (e, args)->{
+            var message = e.getMessage();
             var msg = new StringBuilder();
+            if(args.length == 1) {
+                CommandData c = handler.findCommand(args[0].getString());
+                if(c == null) {
+                    sendReply(message, "Команда не найдена!");
+                    return;
+                }
+                msg.append("```\n")
+                        .append(c.name)
+                        .append("\n")
+                        .append("  ")
+                        .append(c.description)
+                        .append("\n  ")
+                        .append(c.getArgsString())
+                        .append("```");
+                sendReply(message, msg.toString());
+                return;
+            }
             msg.append("```\nCommands:\n");
             for(CommandData c : handler.commands)
                 if(!c.hidden)
-                    msg.append("  ").append(c.name).append(" ").append(c.description).append(c.args == null ? "" : "\n  ->  "+c.argsToString()).append("\n");
+                    msg.append("  ").append(c.name).append(" ").append(c.description).append(c.args == null ? "" : "\n  ->  "+c.getSimpleArgsString()).append("\n");
             msg.append("```");
-            var message = e.getMessage();
-            message.getChannel().subscribe((ch)-> ch.createMessage(MessageCreateSpec
-                            .builder()
-                            .content(msg.toString())
-                            .messageReference(messageReference(message.getId()))
-                            .build())
-                    .subscribe());
-        });
+            sendReply(message, msg.toString());
+        }).addArg("command", false, true, String.class);
 
         handler.register("playtime", "Посмотреть игровое время по сикею.", (e, a)->{
             var message = e.getMessage();
@@ -229,7 +241,7 @@ public class CommandRegister {
             } catch (Exception er) {
                 sendReply(msg, "Ошибка при отправке запроса\n"+er.getMessage());
             }
-        }).setRoles(devRoleId, ownerRoleId);
+        }).setRoles(devRoleId, ownerRoleId).hidden();
 
         handler.register("args", "Test args", (e, a)->{
             StringBuilder sb = new StringBuilder();
@@ -238,7 +250,7 @@ public class CommandRegister {
             sb.append(a[2].getBool()+"\n");
             sb.append(a[3].getString());
             sendReply(e.getMessage(), sb.toString());
-        }).addArg("string", false, String.class).addArg("int", false, Integer.class).addArg("bool", false, Boolean.class).addArg("massiveString", true, String.class).ownerOnly();
+        }).addArg("string", false, String.class).addArg("int", false, Integer.class).addArg("bool", false, Boolean.class).addArg("massiveString", true, String.class).ownerOnly().hidden();
 
         handler.register("addplaytime", "", (e, a)->{
             String ckey = a[0].getString();
