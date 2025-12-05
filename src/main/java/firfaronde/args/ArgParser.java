@@ -62,8 +62,8 @@ public class ArgParser {
     }*/
 
     public static ParseResult parseString(String argss, Arg... neededArgs) {
-        if(neededArgs == null || neededArgs.length == 0)
-            return new ParseResult(new ArgResult[0]);
+        /*if(neededArgs == null || neededArgs.length == 0)
+            return new ParseResult(new ArgResult[0]);*/
         argss = argss.strip();
         String[] args = argss.isEmpty() ? new String[0] : argss.split("\\s+");
         int argsNeed = 0;
