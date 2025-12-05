@@ -255,7 +255,7 @@ public class CommandRegister {
                 }
             }
             sendReply(msg, "Успех!");
-        }).addCkeyArg().addIntArg("hours").ownerOnly();
+        }).addCkeyArg().addIntArg("hours").setRoles(devRoleId, ownerRoleId, adminsRoleId);
 
         // ArgParser.processArgsPos(handler.commands);
     }

@@ -35,7 +35,7 @@ public class Vars {
 
     public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-    public static Snowflake ownerRoleId, devRoleId, bansChannel;
+    public static Snowflake ownerRoleId, devRoleId, adminsRoleId, bansChannel;
     public static String instanceId, instanceApiKey, watchdogHost; // ss14.watchdog
 
     public static boolean enableBanListener;
@@ -57,6 +57,7 @@ public class Vars {
 
         ownerRoleId = Snowflake.of(env.get("OWNER_ROLE_ID"));
         devRoleId = Snowflake.of(env.get("DEV_ROLE_ID"));
+        adminsRoleId = Snowflake.of(env.get("ADMIN_ROLE_ID"));
 
         instanceId = env.get("INSTANCE_ID");
         instanceApiKey = env.get("INSTANCE_API_KEY");
