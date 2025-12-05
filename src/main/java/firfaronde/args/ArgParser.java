@@ -79,7 +79,7 @@ public class ArgParser {
 
         String tmp1;
 
-        for(int i = 0; i<argsNeed; i+= 1) {
+        for(int i = 0; i<neededArgs.length; i+= 1) {
             Arg a = neededArgs[i];
             if(a.opt) {
                 if(a.greedy) {
