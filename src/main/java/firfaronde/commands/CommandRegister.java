@@ -20,6 +20,7 @@ import firfaronde.database.models.Character;
 import firfaronde.database.models.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
@@ -273,6 +274,18 @@ public class CommandRegister {
             }
             sendReply(msg, "Успех!");
         }).addCkeyArg().addIntArg("hours").setRoles(devRoleId, ownerRoleId, adminsRoleId);
+        
+        handler.register("пошелнахуй", "", (e, args)->{
+            Message msg = e.getMessage();
+            msg.getMessageReference().ifPresent(a->{
+                a.getMessageId().ifPresent(i->{
+                    gateway.getMessageById(msg.getChannelId(), i).flatMap(m->{
+                        m.delete().subscribe();
+                        return Mono.empty();
+                    }).subscribe();
+                });
+            });
+        }).hidden().ownerOnly();
 
         // ArgParser.processArgsPos(handler.commands);
         handler.sort();
