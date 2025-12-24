@@ -13,6 +13,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class Vars {
+    public static final Snowflake owner = Snowflake.of("1416876595301580822");
+
     static Dotenv env;
 
     public static String token;
@@ -30,7 +32,7 @@ public class Vars {
     public static String db, db_user, db_password, db_host;
     public static int db_port;
 
-    public static final ExecutorService executor = Executors.newWorkStealingPool();
+    public static final ExecutorService executor = Executors.newFixedThreadPool(2);
     public static final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     public static final Logger logger = LoggerFactory.getLogger(Main.class);

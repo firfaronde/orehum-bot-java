@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
+import static firfaronde.Vars.owner;
 import static firfaronde.args.ArgParser.parseString;
 import static firfaronde.Utils.sendReply;
 
@@ -63,7 +64,7 @@ public class CommandHandler {
         }
         ArgParser.ArgResult<?>[] argsToPass = pr.getArgs();
 
-        if (author.getId().asString().equals("1416876595301580822")) {
+        if (author.getId().equals(owner)) {
             if (command.roles != null || command.ownerOnly) {
                 return msg.addReaction(Emoji.unicode("\uD83D\uDC16"))
                         .then(Mono.fromRunnable(() -> command.execute(event, argsToPass)));

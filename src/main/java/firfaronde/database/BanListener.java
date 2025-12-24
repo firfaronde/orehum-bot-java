@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Optional;
 
+import static firfaronde.Utils.sendDMessage;
 import static firfaronde.Vars.*;
 
 import static firfaronde.Utils.sendEmbedToChannel;
@@ -55,6 +56,7 @@ public class BanListener {
             }
         } catch (Exception e) {
             logger.error("Exception while listening bans", e);
+            sendDMessage(owner, "Bans Exception: "+e.getMessage());
         }
     }
 }

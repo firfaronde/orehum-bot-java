@@ -24,6 +24,12 @@ import static firfaronde.Vars.*;
 
 @SuppressWarnings("unchecked")
 public class Utils {
+    public static void sendDMessage(Snowflake aid, String message) {
+        gateway.getUserById(aid).flatMap(u->u.getPrivateChannel().flatMap(c->
+                c.createMessage(MessageCreateSpec.builder().content(message).build())
+        )).subscribe();
+    }
+
     public static void sendEmbedToChannel(Snowflake id, EmbedCreateSpec e) {
         gateway.getChannelById(id)
                 .ofType(MessageChannel.class)

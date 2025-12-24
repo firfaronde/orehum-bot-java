@@ -287,6 +287,15 @@ public class CommandRegister {
             });
         }).hidden().ownerOnly();
 
+        handler.register("exit", "", (e, a)->{
+            sendReply(e.getMessage(), "Ok!");
+            if(a.length == 1) {
+                System.exit(a[0].getInt());
+                return;
+            }
+            System.exit(0);
+        }).hidden().ownerOnly();
+
         // ArgParser.processArgsPos(handler.commands);
         handler.sort();
         logger.info("{} commands registered!", handler.commands.size());
