@@ -76,12 +76,12 @@ public class Utils {
         });
     }
 
+    private static final HttpClient http = HttpClient.newBuilder()
+        .connectTimeout(Duration.ofSeconds(2))
+        .build();
+
     // oh uh vibecode
     public static Map<String, Object> getJson(String url) throws Exception {
-        HttpClient client = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofSeconds(2))
-                .build();
-
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(10))
@@ -149,8 +149,6 @@ public class Utils {
     }
 
     public static HttpResponse<String> updateServer() throws Exception {
-        HttpClient client = HttpClient.newHttpClient();
-
         String auth = instanceId + ":" + instanceApiKey;
         String encoded = Base64.getEncoder().encodeToString(auth.getBytes());
 

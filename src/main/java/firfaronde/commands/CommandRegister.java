@@ -1,6 +1,7 @@
 package firfaronde.commands;
 
 import com.zaxxer.hikari.HikariPoolMXBean;
+import discord4j.core.object.MessageReference;
 import discord4j.core.object.entity.Message;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.core.spec.MessageCreateSpec;
@@ -277,13 +278,11 @@ public class CommandRegister {
         
         handler.register("пошелнахуй", "", (e, args)->{
             Message msg = e.getMessage();
-            msg.getMessageReference().ifPresent(a->{
-                a.getMessageId().ifPresent(i->{
-                    gateway.getMessageById(msg.getChannelId(), i).flatMap(m->{
-                        m.delete().subscribe();
-                        return Mono.empty();
-                    }).subscribe();
-                });
+            msg.getMessageReference().flatMap(MessageReference::getMessageId).ifPresent(i -> {
+                gateway.getMessageById(msg.getChannelId(), i).flatMap(m -> {
+                    m.delete().subscribe();
+                    return Mono.empty();
+                }).subscribe();
             });
         }).hidden().ownerOnly();
 
@@ -291,7 +290,6 @@ public class CommandRegister {
             sendReply(e.getMessage(), "Ok!");
             if(a.length == 1) {
                 System.exit(a[0].getInt());
-                return;
             }
             System.exit(0);
         }).hidden().ownerOnly();

@@ -29,8 +29,8 @@ public class BanListener {
 
     public static void load(HikariDataSource ds) {
         logger.info("Loading Ban Listener");
-
-        mapper = new ObjectMapper();
+        if(mapper == null)
+            mapper = new ObjectMapper();
 
         try (Connection conn = ds.getConnection()) {
             PGConnection pgConn = conn.unwrap(PGConnection.class);
@@ -57,6 +57,7 @@ public class BanListener {
         } catch (Exception e) {
             logger.error("Exception while listening bans", e);
             sendDMessage(owner, "Bans Exception: "+e.getMessage());
+            load(ds);
         }
     }
 }
