@@ -88,7 +88,7 @@ public class Utils {
                 .GET()
                 .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
 
         return mapper.readValue(response.body(), Map.class);
     }
@@ -158,6 +158,6 @@ public class Utils {
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .build();
 
-        return client.send(request, HttpResponse.BodyHandlers.ofString());
+        return http.send(request, HttpResponse.BodyHandlers.ofString());
     }
 }
