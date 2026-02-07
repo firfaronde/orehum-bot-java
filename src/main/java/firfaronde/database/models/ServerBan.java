@@ -70,7 +70,7 @@ public class ServerBan {
     public void sendBan(Snowflake channel) {
         Optional<String> playerCkey = Player.getCkey(playerUserId), adminCkey = Player.getCkey(banningAdmin);
         StringBuilder stb = new StringBuilder();
-	String bntime = "Срок: "
+	String bntime = "Срок: ";
 	if(expirationTime != null)
 		bntime = bntime + "<t:" + expirationTime.toEpochSecond() + ":R>";
 	else
