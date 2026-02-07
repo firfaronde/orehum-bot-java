@@ -74,7 +74,7 @@ public class ServerBan {
 	if(expirationTime != null)
 		bntime = bntime + "<t:" + expirationTime.toEpochSecond() + ":R>";
 	else
-		ntime = bntime + "Бессрочен";
+		bntime = bntime + "Бессрочен";
         playerCkey.ifPresent(s -> stb.append("Нарушитель: ").append(s).append("\n"));
         stb.append("Администратор: ").append(adminCkey.orElse("Система")).append("\n")
                 .append("Раунд: ").append(roundId).append("\n")
