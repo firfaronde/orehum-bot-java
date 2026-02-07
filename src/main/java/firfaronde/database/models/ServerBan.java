@@ -71,10 +71,11 @@ public class ServerBan {
         Optional<String> playerCkey = Player.getCkey(playerUserId), adminCkey = Player.getCkey(banningAdmin);
         StringBuilder stb = new StringBuilder();
 	String bntime = "Срок: ";
-	if(expirationTime != null)
+	if(expirationTime != null) {
 		bntime = bntime + "<t:" + expirationTime.toEpochSecond() + ":R>";
-	else
+	} else {
 		bntime = bntime + "Бессрочен";
+	}
         playerCkey.ifPresent(s -> stb.append("Нарушитель: ").append(s).append("\n"));
         stb.append("Администратор: ").append(adminCkey.orElse("Система")).append("\n")
                 .append("Раунд: ").append(roundId).append("\n")
