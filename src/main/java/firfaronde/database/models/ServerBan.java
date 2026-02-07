@@ -70,10 +70,15 @@ public class ServerBan {
     public void sendBan(Snowflake channel) {
         Optional<String> playerCkey = Player.getCkey(playerUserId), adminCkey = Player.getCkey(banningAdmin);
         StringBuilder stb = new StringBuilder();
+	String bntime = "Срок: "
+	if(expirationTime != null)
+		bntime = bntime + "<t:" + expirationTime.toEpochSecond() + ":R>";
+	else
+		ntime = bntime + "Бессрочен";
         playerCkey.ifPresent(s -> stb.append("Нарушитель: ").append(s).append("\n"));
         stb.append("Администратор: ").append(adminCkey.orElse("Система")).append("\n")
                 .append("Раунд: ").append(roundId).append("\n")
-                .append("Срок: <t:").append(expirationTime.toEpochSecond()).append(":R>").append("\n\n")
+                .append("Срок: ").append(bntime).append("\n\n")
                 .append("Причина: ").append(reason);
         if(stb.length()>1024) {
             stb.setLength(1021);
