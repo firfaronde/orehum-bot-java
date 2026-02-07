@@ -254,7 +254,7 @@ public class CommandRegister {
             sendReply(e.getMessage(), sb.toString());
         }).addArg("string", false, String.class).addArg("int", false, Integer.class).addArg("bool", false, Boolean.class).addArg("massiveString", true, String.class).ownerOnly().hidden();
 
-        handler.register("addplaytime", "", (e, a)->{
+        handler.register("addplaytime", "Накрутить время на базовые роли", (e, a)->{
             String ckey = a[0].getString();
             Message msg = e.getMessage();
 
